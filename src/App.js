@@ -1,3 +1,4 @@
+// jsx nad scss only
 function App() {
   return (
     <div className="wrapper clear">
