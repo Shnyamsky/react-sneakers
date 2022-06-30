@@ -1,30 +1,35 @@
+import { useState, useEffect } from 'react'
+
 import Card from './components/Card'
 import Header from './components/Header'
 import Drawer from './components/Drawer'
 
-const arr = [
-  {
-    title: 'Мужские Кроссовки Nike Blazer Mid Suede',
-    price: 12999,
-    imageUrl: '/img/sneakers/1.jpg'
-  },
-  {
-    title: 'Мужские Кроссовки Nike Air Max 270',
-    price: 12999,
-    imageUrl: '/img/sneakers/2.jpg'
-  },
-  {
-    title: 'Мужские Кроссовки Nike Blazer Mid Suede',
-    price: 8499,
-    imageUrl: '/img/sneakers/3.jpg'
-  }
-]
-
 function App() {
+  const [items, setItems] = useState([])
+  const [cartItems, setCartItems] = useState([])
+  const [cartOpened, setCartOdened] = useState(false)
+
+  useEffect(() => {
+    fetch('https://62bdaa89bac21839b6089ab1.mockapi.io/items').then(res => {
+      return res.json()
+    })
+    .then(json => {
+      setItems(json)
+    })
+  }, [])
+  
+  const onAddToCart = (itemData) => {
+    setCartItems(prev => [...prev, itemData])
+  }
+
   return (
     <div className="wrapper clear">
-      <Drawer />
-      <Header />
+      {cartOpened && 
+        <Drawer
+          cartItems={cartItems}
+          onCloseClick={() => setCartOdened(false)}
+        />}
+      <Header onCartClick={() => setCartOdened(true)} />
 
       <div className="content p-40">
         <div className="d-flex align-center justify-between mb-40">
@@ -35,15 +40,16 @@ function App() {
           </div>
         </div>
 
-        <div className="d-flex">
-          { arr.map(objectItem => (
+        <div className="d-flex flex-wrap">
+          {items.map(item => (
             <Card
-              title={objectItem.title}
-              price={objectItem.price}
-              imageUrl={objectItem.imageUrl}
-              onClick={() => console.log(objectItem)}
+              title={item.title}
+              price={item.price}
+              imageUrl={item.imageUrl}
+              onPlusClick={(itemData) => onAddToCart(itemData)}
+              onFavClick={() => console.log('Click to Fav btn')}
             />
-          )) }
+          ))}
         </div>
       </div>
     </div>

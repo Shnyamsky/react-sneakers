@@ -1,41 +1,35 @@
 import styles from './Drawer.module.scss'
 
-function Drawer(){
+function Drawer({ onCloseClick, cartItems = []}) {
   return(
     <div
-      style={{ display: 'none' }}
+      // style={{ display: 'none' }}
       className={styles.overlay}
     >
       <div className={styles.drawer}>
         <h2 className="mb-30 d-flex justify-between">
           Корзина
-          <img className="cu-p" src="/img/btn-remove.svg" alt="Remove" />
+          <img
+            className="cu-p"
+            onClick={onCloseClick}
+            src="/img/btn-remove.svg"
+            alt="Close" />
         </h2>
 
         <div className={styles.items}>
-          <div className={styles.cartItem}>
-            <div
-              style={{ backgroundImage: 'url(/img/sneakers/2.jpg)' }}
-              className={styles.cartItemImg}></div>
+          {cartItems.map((item) => (
+            <div className={styles.cartItem}>
+              <div
+                style={{ backgroundImage: `url(${item.imageUrl})` }}
+                className={styles.cartItemImg}></div>
 
-            <div className="mr-20 flex">
-              <p className="mb-5">Мужские Кроссовки Nike Air Max 270</p>
-              <b>12 999 руб.</b>
+              <div className="mr-20 flex">
+                <p className="mb-5">{item.title}</p>
+                <b>{Math.floor(item.price / 1000)} {item.price % 1000} руб.</b>
+              </div>
+              <img className={styles.removeBtn} src="/img/btn-remove.svg" alt="Remove" />
             </div>
-            <img className={styles.removeBtn} src="/img/btn-remove.svg" alt="Remove" />
-          </div>
-
-          <div className={styles.cartItem}>
-            <div
-              style={{ backgroundImage: 'url(/img/sneakers/3.jpg)' }}
-              className={styles.cartItemImg}></div>
-
-            <div className="mr-20 flex">
-              <p className="mb-5">Мужские Кроссовки Nike Blazer Mid Suede</p>
-              <b>8 499 руб.</b>
-            </div>
-            <img className={styles.removeBtn} src="/img/btn-remove.svg" alt="Remove" />
-          </div>
+          ))}
         </div>
 
         {/* Посмотреть расширение ul>li*2>span+div+b */}
