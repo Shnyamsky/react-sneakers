@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import styles from './Card.module.scss'
 
-function Card({ id, title, price, imageUrl, onPlusClick, onFavClick, favorited = false }) {
-  const [isAdded, setIsAdded] = useState(false)
+function Card({ id, title, price, imageUrl, onPlusClick, onFavClick, favorited = false, added = false }) {
+  const [isAdded, setIsAdded] = useState(added)
   const [isFav, setIsFav] = useState(favorited)
 
   const handlePlusClick = () => {
