@@ -1,14 +1,31 @@
+import { useContext } from 'react';
+import AppContext from '../context';
+
 import Card from '../components/Card'
 
 function Home({ 
-  items,
-  cartItems,
-  onAddToCart,
-  onFavorite,
   searchValue,
   onChangeSearchInput,
   onClickClearBtn,
+  isLoading
 }) {
+  const { items, onCart, onFavorite } = useContext(AppContext)
+
+  const renderItems = () => {
+    const filteredItems = items.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()))
+
+    return (isLoading ? Array(10).fill({}) : filteredItems)
+    .map((item) => (
+      <Card
+        key={item.itemId}
+        {...item}
+        // Check 2 ways
+        onPlusClick={(itemData) => onCart(itemData)}
+        onFavClick={onFavorite}
+        loading={isLoading}
+      />
+  ))}
+
   return (
     <div className="content p-40">
       <div className="d-flex align-center justify-between mb-40">
@@ -28,19 +45,7 @@ function Home({
       </div>
 
       <div className="d-flex flex-wrap">
-        {/* Перевести filter и map в функцию */}
-        {items
-          .filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()))
-          .map((item, index) => (
-            <Card
-              key={index}
-              {...item}
-              // Рассмотреть 2 способа
-              onPlusClick={(itemData) => onAddToCart(itemData)}
-              onFavClick={onFavorite}
-              added={cartItems.some(cartItem => Number(cartItem.id) === Number(item.id))}
-            />
-        ))}
+        {renderItems()}
       </div>
     </div>
   )}

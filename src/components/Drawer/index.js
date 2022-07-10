@@ -1,6 +1,39 @@
+import { useState, useContext } from 'react'
+import axios from 'axios'
+
+import Info from '../Info'
+import AppContext from '../../context'
+
 import styles from './Drawer.module.scss'
 
-function Drawer({ onCloseClick, onRemove, cartItems = [] }) {
+const delay = (millisec) => new Promise((resolve) => setTimeout(resolve, millisec))
+
+function Drawer() {
+  const { cartItems, setCartItems, onCart, setCartOpened } = useContext(AppContext)
+  const [orderId, setIsOrderId] = useState(null)
+  const [isOrderComplete, setIsOrderComplite] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const onClickOrder = async () => {
+    try {
+      setIsLoading(true)
+      const {data} = await axios.post('https://62bdaa89bac21839b6089ab1.mockapi.io/orders', {items: cartItems})
+      setIsOrderId(data.id)
+      setCartItems([])
+      setIsOrderComplite(true)
+
+      // bad practice
+      for (let i = 0; i < cartItems.length; i++) {
+        const item = cartItems[i]
+        await axios.delete(`https://62bdaa89bac21839b6089ab1.mockapi.io/cart/${item.id}`)
+        await delay(1000)
+      }
+    } catch(error) {
+      alert('Ошибка при создании заказа :(')
+    }
+    setIsLoading(false)
+  }
+
   return(
     <div className={styles.overlay}>
       <div className={styles.drawer}>
@@ -8,17 +41,17 @@ function Drawer({ onCloseClick, onRemove, cartItems = [] }) {
           Корзина
           <img
             className="cu-p"
-            onClick={onCloseClick}
+            onClick={() => setCartOpened(false)}
             src="/img/btn-remove.svg"
             alt="Close" />
         </h2>
 
         {
           cartItems.length > 0 ? (
-            <div>
+            <>
               <div className={styles.items}>
                 {cartItems.map((item) => (
-                  <div key={item.id} className={styles.cartItem}>
+                  <div key={item.itemId} className={styles.cartItem}>
                     <div
                       style={{ backgroundImage: `url(${item.imageUrl})` }}
                       className={styles.cartItemImg}></div>
@@ -29,14 +62,14 @@ function Drawer({ onCloseClick, onRemove, cartItems = [] }) {
                     </div>
                     <img
                       className={styles.removeBtn}
-                      onClick={() => onRemove(item.id)}
+                      onClick={() => onCart(item)}
                       src="/img/btn-remove.svg"
                       alt="Remove" />
                   </div>
                 ))}
               </div>
 
-              {/* Посмотреть расширение ul>li*2>span+div+b */}
+              {/* Check extension ul>li*2>span+div+b */}
               <div className={styles.cartTotalBlock}>
                 <ul>
                   <li>
@@ -51,22 +84,21 @@ function Drawer({ onCloseClick, onRemove, cartItems = [] }) {
                   </li>
                 </ul>
 
-                <button className={styles.greenButton}>
+                <button disabled={isLoading} className={styles.greenButton} onClick={onClickOrder}>
                   Оформить заказ
                   <img src="/img/arrow.svg" alt="Arrow" />
                 </button>
               </div>
-            </div>
+            </>
           ) : (
-            <div className={styles.cartEmpty}>
-              <img className="mb-20" width={120} height={120} src="/img/empty-cart.jpg" alt="Empty"/>
-              <h2>Корзина пустая</h2>
-              <p className="opacity-6">Добавьте хотя-бы одну пару кроссовок, чтобы сделать заказ.</p>
-              <button onClick={onCloseClick} className={styles.greenButton}>
-                <img src="/img/arrow.svg" alt="Arrow" />
-                Вернуться назад
-              </button>
-            </div>
+            <Info 
+              title={isOrderComplete ? "Заказ оформлен!" : "Корзина пустая"}
+              description={isOrderComplete
+                ? `Ваш заказ №${orderId} скоро будет передан курьерской доставке` 
+                : "Добавьте хотя-бы одну пару кроссовок, чтобы сделать заказ"
+              }
+              image={isOrderComplete ? "/img/complete-order.jpg" : "/img/empty-cart.jpg"}
+            />
           )
         }
 

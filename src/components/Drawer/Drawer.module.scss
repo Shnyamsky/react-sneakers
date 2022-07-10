@@ -57,7 +57,11 @@
 
   .greenButton {
     position: relative;
-    
+
+    &:disabled {
+      animation: button-loading 0.5s ease-in-out infinite;
+    }
+
     &:hover {
       img {
         transform: translateX(5px)
@@ -84,6 +88,11 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.2s ease-in-out;
+
+  &:disabled {
+    background: #bdbdbd !important;
+    cursor: default;
+  }
 
   &:hover {
     background: lighten($color: #9dd558, $amount: 5);
@@ -165,5 +174,17 @@
       margin-right: 15px;
       transition: transform 0.15s ease-in-out;
     }
+  }
+}
+
+@keyframes button-loading {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
   }
 }
