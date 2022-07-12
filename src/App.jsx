@@ -21,7 +21,7 @@ function App() {
   const [cartOpened, setCartOpened] = useState(false)
   const [searchValue, setSearchValue] = useState('')
 
-  //Loading items state
+  // Loading state
   const [isLoading, setIsLoading] = useState(true)
 
   // MockAPI 1st loading
@@ -34,10 +34,6 @@ function App() {
           axios.get('https://62bdaa89bac21839b6089ab1.mockapi.io/favorites'), 
           axios.get('https://62bdaa89bac21839b6089ab1.mockapi.io/items')
         ])
-
-        // const itemsCartResponse = await axios.get('https://62bdaa89bac21839b6089ab1.mockapi.io/cart')
-        // const itemsFavoriesResponse = await axios.get('https://62bdaa89bac21839b6089ab1.mockapi.io/favorites')
-        // const itemsResponse = await axios.get('https://62bdaa89bac21839b6089ab1.mockapi.io/items')
 
         setItems(itemsResponse.data)
         setCartItems(itemsCartResponse.data)
@@ -84,8 +80,15 @@ function App() {
         setFavItems(prev => prev.filter(item => Number(item.itemId) !== Number(itemData.itemId)))
         await axios.delete(`https://62bdaa89bac21839b6089ab1.mockapi.io/favorites/${findItem.id}`)
       } else {
+        setFavItems(prev => [...prev, itemData])
         const { data } = await axios.post('https://62bdaa89bac21839b6089ab1.mockapi.io/favorites', itemData)
-        setFavItems(prev => [...prev, data])
+        
+        setFavItems(prev => prev.map(item => {
+          if (Number(item.itemId) === Number(data.itemId)) {
+            return {...item, id: data.id}
+          }
+          return item
+        }))
       }
     } catch (error) {
       alert('Не удалось добавить в закладки')
@@ -101,7 +104,7 @@ function App() {
     setSearchValue('')
   }
 
-  //check added items to cart and favorites
+  // Check added items to cart and favorites
   const isCartItemAdded = (itemId) => {
     return cartItems.some(cartItem => Number(cartItem.itemId) === Number(itemId))
   }
@@ -112,17 +115,17 @@ function App() {
 
   return (
     <AppContext.Provider value={{ 
-      items, cartItems, 
-      setCartItems, favItems, 
-      cartOpened,
-      setCartOpened,
-      onCart, 
-      onFavorite, 
-      isCartItemAdded, 
-      isFavItemAdded
+      items,
+      cartItems, setCartItems,
+      favItems,
+      cartOpened, setCartOpened,
+      onCart,
+      onFavorite,
+      isCartItemAdded,
+      isFavItemAdded,
+      isLoading
      }}>
       <div className="wrapper clear">
-        {/* {cartOpened && <Drawer />} */}
         <Drawer />
         <Header onCartClick={() => setCartOpened(true)} />
 
@@ -131,10 +134,9 @@ function App() {
             searchValue={searchValue}
             onChangeSearchInput={onChangeSearchInput}
             onClickClearBtn={onClickClearBtn}
-            isLoading={isLoading}
           />} />
             
-          <Route path="/favorites" element={<Favorites isLoading={isLoading}/>} />
+          <Route path="/favorites" element={<Favorites />} />
           <Route path="/orders" element={<Orders />} />
         </Routes>
       </div>

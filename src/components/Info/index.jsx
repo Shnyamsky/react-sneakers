@@ -1,9 +1,11 @@
+import { Link } from 'react-router-dom'
 import { useContext } from 'react'
+
 import AppContext from '../../context'
 
 import styles from './Info.module.scss'
 
-const Info = ({ title, description, image }) => {
+const Info = ({ title, description, image, isPage }) => {
   const { setCartOpened } = useContext(AppContext) 
 
   return (
@@ -11,10 +13,19 @@ const Info = ({ title, description, image }) => {
       <img className="mb-20" width={120} src={image} alt="Empty"/>
       <h2>{title}</h2>
       <p className="opacity-6">{description}</p>
-      <button onClick={() => setCartOpened(false)} className={styles.greenButton}>
-        <img src="/img/arrow.svg" alt="Arrow" />
-        Вернуться назад
-      </button>
+      {isPage ? (
+        <Link to="/">
+          <button className={styles.greenButton}>
+            <img src="/img/arrow.svg" alt="Arrow" />
+            Выбрать кроссовки
+          </button>
+        </Link>
+      ) : (
+        <button onClick={() => setCartOpened(false)} className={styles.greenButton}>
+          <img src="/img/arrow.svg" alt="Arrow" />
+          Вернуться назад
+        </button>
+      )}
     </div>
   )
 }

@@ -23,16 +23,16 @@ function Card({ id, itemId, title, price, imageUrl, onPlusClick, onFavClick, loa
         <ContentLoader 
           speed={2}
           width={158}
-          height={230}
-          viewBox="0 0 158 230"
+          height={250}
+          viewBox="0 0 158 250"
           backgroundColor="#f3f3f3"
           foregroundColor="#ecebeb"
         >
-          <rect x="0" y="0" rx="10" ry="10" width="158" height="130" /> 
-          <rect x="0" y="145" rx="5" ry="5" width="158" height="15" /> 
-          <rect x="0" y="165" rx="5" ry="5" width="110" height="15" /> 
-          <rect x="0" y="200" rx="5" ry="5" width="80" height="25" /> 
-          <rect x="126" y="193" rx="10" ry="10" width="32" height="32" />
+          <rect x="0" y="0" rx="10" ry="10" width="158" height="140" /> 
+          <rect x="0" y="160" rx="5" ry="5" width="158" height="15" /> 
+          <rect x="0" y="180" rx="5" ry="5" width="110" height="15" /> 
+          <rect x="0" y="225" rx="5" ry="5" width="80" height="25" /> 
+          <rect x="126" y="218" rx="10" ry="10" width="32" height="32" />
         </ContentLoader>
         :
         <>
@@ -48,13 +48,12 @@ function Card({ id, itemId, title, price, imageUrl, onPlusClick, onFavClick, loa
               alt="Liked" 
             />
           </div>}
-          <img width={133} height={112} src={imageUrl} alt="Sneakers" />
-          {/* <img width='100%' height={135} src={imageUrl} alt="Sneakers" /> */}
+          <img width={158} height='100%' src={imageUrl} alt="Sneakers" />
           <h5>{title}</h5>
           <div className="d-flex justify-between align-center">
             <div className="d-flex flex-column">
               <span>Цена:</span>
-              <b>{Math.floor(price / 1000)} {price % 1000} руб.</b>
+              <b>{price} руб.</b>
             </div>
             {onPlusClick && <div
               className={styles.plusBtn}

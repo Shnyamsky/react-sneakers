@@ -155,3 +155,13 @@ fetch('https://62bdaa89bac21839b6089ab1.mockapi.io/items').then(res => {
 .then(json => {
   setItems(json)
 })
+
+function async fetchData() {
+  try {
+    const itemsCartResponse = await axios.get('https://62bdaa89bac21839b6089ab1.mockapi.io/cart')
+    const itemsFavoriesResponse = await axios.get('https://62bdaa89bac21839b6089ab1.mockapi.io/favorites')
+    const itemsResponse = await axios.get('https://62bdaa89bac21839b6089ab1.mockapi.io/items')
+  } catch(error) {
+    console.error(error)
+  }
+}

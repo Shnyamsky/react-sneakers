@@ -38,7 +38,6 @@ function Drawer() {
   }
 
   return(
-    // <div className={styles.overlay}>
     <div className={`${styles.overlay} ${cartOpened ? styles.overlayVisible : ''}`}>
       <div className={styles.drawer}>
         <h2 className="mb-30 d-flex justify-between">
@@ -62,7 +61,7 @@ function Drawer() {
 
                     <div className="mr-20 flex">
                       <p className="mb-5">{item.title}</p>
-                      <b>{Math.floor(item.price / 1000)} {item.price % 1000} руб.</b>
+                      <b>{item.price} руб.</b>
                     </div>
                     <img
                       className={styles.removeBtn}

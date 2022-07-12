@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 import Card from '../components/Card'
+import Info from '../components/Info'
 
 function Orders() {
   const [isLoading, setIsLoading] = useState(true)
@@ -30,17 +31,25 @@ function Orders() {
       <div className="d-flex align-center justify-between mb-40">
         <h1>Мои заказы</h1>
       </div>
-
-      <div className="d-flex flex-wrap">
-        {(isLoading ? Array(8).fill({}) : orderItems)
-        .map(item => (
-          <Card
-            key={item.itemId}
-            {...item}
-            loading={isLoading}
-          />
-        ))}
-      </div>
+        <div className="items-grid">
+          {(isLoading ? Array(4).fill({}) : orderItems)
+          .map(item => (
+              <Card
+                key={item.itemId}
+                {...item}
+                loading={isLoading}
+              />
+          ))}
+        </div>
+        {(!orderItems.length && !isLoading) &&
+          <Info 
+          title={"У вас нет заказов"}
+          description={`Уже выбрали кроссовки?\n
+            Оформите хотя бы один заказ!`}
+          image={"/img/emoji-order.png"}
+          isPage
+        />
+        }
     </div>
   )}
 

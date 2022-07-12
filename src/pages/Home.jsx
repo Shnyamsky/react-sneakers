@@ -2,14 +2,10 @@ import { useContext } from 'react'
 import AppContext from '../context'
 
 import Card from '../components/Card'
+import Slider from '../components/Slider'
 
-function Home({ 
-  searchValue,
-  onChangeSearchInput,
-  onClickClearBtn,
-  isLoading
-}) {
-  const { items, onCart, onFavorite } = useContext(AppContext)
+function Home({ searchValue, onChangeSearchInput, onClickClearBtn}) {
+  const { items, onCart, onFavorite, isLoading } = useContext(AppContext)
 
   const renderItems = () => {
     const filteredItems = items.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()))
@@ -28,6 +24,7 @@ function Home({
 
   return (
     <div className="content p-40">
+      <Slider />
       <div className="d-flex align-center justify-between mb-40">
         <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : "Все кроссовки"}</h1>
         <div className="search-block d-flex">
@@ -44,7 +41,8 @@ function Home({
         </div>
       </div>
 
-      <div className="d-flex flex-wrap">
+      {/* <div className="d-flex flex-wrap"> */}
+      <div className="items-grid">
         {renderItems()}
       </div>
     </div>
