@@ -7,15 +7,14 @@ import styles from './Card.module.scss'
 
 function Card({ id, itemId, title, price, imageUrl, onPlusClick, onFavClick, loading = false }) {
   const { isCartItemAdded, isFavItemAdded } = useContext(AppContext)
-
-  // console.log(title, isCartItemAdded(itemId))
+  const itemData = { id, itemId, title, price, imageUrl }
 
   const handlePlusClick = () => {
-    onPlusClick({ id, itemId, title, price, imageUrl })
+    onPlusClick(itemData)
   }
   
   const handleFavClick = () => {
-    onFavClick({ id, itemId, title, price, imageUrl })
+    onFavClick(itemData)
   }
 
   return(
@@ -37,12 +36,18 @@ function Card({ id, itemId, title, price, imageUrl, onPlusClick, onFavClick, loa
         </ContentLoader>
         :
         <>
-          <div
+          {onFavClick && <div
             className={styles.favBtn}
             onClick={handleFavClick}
           >
-            <img src={isFavItemAdded(itemId) ? "/img/heart-liked.svg" : "/img/heart-unliked.svg"} alt="Liked" />
-          </div>
+            <img 
+              width={32} height={32} 
+              src={isFavItemAdded(itemId) 
+              ? "/img/heart-liked.svg" 
+              : "/img/heart-unliked.png"} 
+              alt="Liked" 
+            />
+          </div>}
           <img width={133} height={112} src={imageUrl} alt="Sneakers" />
           {/* <img width='100%' height={135} src={imageUrl} alt="Sneakers" /> */}
           <h5>{title}</h5>
@@ -51,12 +56,17 @@ function Card({ id, itemId, title, price, imageUrl, onPlusClick, onFavClick, loa
               <span>Цена:</span>
               <b>{Math.floor(price / 1000)} {price % 1000} руб.</b>
             </div>
-            <div
+            {onPlusClick && <div
               className={styles.plusBtn}
               onClick={handlePlusClick}
             >
-              <img src={isCartItemAdded(itemId) ? "/img/btn-checked.svg" : "/img/btn-plus.svg"} alt="Plus"/>
-            </div>
+              <img 
+                src={isCartItemAdded(itemId) 
+                ? "/img/btn-checked.svg" 
+                : "/img/btn-plus.svg"} 
+                alt="Plus"
+              />
+            </div>}
           </div>
         </>
       }

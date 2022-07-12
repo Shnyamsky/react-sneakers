@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import AppContext from '../context';
+import { useContext } from 'react'
+import AppContext from '../context'
 
 import Card from '../components/Card'
 
@@ -14,7 +14,7 @@ function Home({
   const renderItems = () => {
     const filteredItems = items.filter(item => item.title.toLowerCase().includes(searchValue.toLowerCase()))
 
-    return (isLoading ? Array(10).fill({}) : filteredItems)
+    return (isLoading ? Array(8).fill({}) : filteredItems)
     .map((item) => (
       <Card
         key={item.itemId}

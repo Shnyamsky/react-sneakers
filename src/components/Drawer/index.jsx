@@ -3,13 +3,16 @@ import axios from 'axios'
 
 import Info from '../Info'
 import AppContext from '../../context'
+import { useCart } from '../../hooks/useCart'
 
 import styles from './Drawer.module.scss'
 
 const delay = (millisec) => new Promise((resolve) => setTimeout(resolve, millisec))
 
 function Drawer() {
-  const { cartItems, setCartItems, onCart, setCartOpened } = useContext(AppContext)
+  const { onCart, cartOpened, setCartOpened } = useContext(AppContext)
+  const { cartItems, setCartItems, totalPrice } = useCart()
+  
   const [orderId, setIsOrderId] = useState(null)
   const [isOrderComplete, setIsOrderComplite] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -35,7 +38,8 @@ function Drawer() {
   }
 
   return(
-    <div className={styles.overlay}>
+    // <div className={styles.overlay}>
+    <div className={`${styles.overlay} ${cartOpened ? styles.overlayVisible : ''}`}>
       <div className={styles.drawer}>
         <h2 className="mb-30 d-flex justify-between">
           Корзина
@@ -75,12 +79,12 @@ function Drawer() {
                   <li>
                     <span>Итого:</span>
                     <div></div>
-                    <b>21 498 руб.</b>
+                    <b>{totalPrice} руб.</b>
                   </li>
                   <li>
                     <span>Налог 5%:</span>
                     <div></div>
-                    <b>1 074 руб.</b>
+                    <b>{(totalPrice * 0.05).toFixed(2)} руб.</b>
                   </li>
                 </ul>
 

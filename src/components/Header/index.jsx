@@ -1,7 +1,12 @@
 import { Link } from 'react-router-dom'
+
+import { useCart } from '../../hooks/useCart'
+
 import styles from './Header.module.scss'
 
 function Header(props) {
+  const { totalPrice } = useCart()
+
   return(
     <header className={styles.header}>
       <Link to="/">
@@ -17,7 +22,7 @@ function Header(props) {
       <ul className="d-flex">
         <li className="mr-30 cu-p" onClick={props.onCartClick}>
           <img width={20} height={20} src="/img/cart.svg" alt="Cart"/>
-          <span>1205 руб.</span>
+          <span>{totalPrice} руб.</span>
         </li>
         <li
           className="mr-20 cu-p"
@@ -31,7 +36,9 @@ function Header(props) {
           </svg> */}
         </li>
         <li>
-          <img width={20} height={20} src="/img/user.svg" alt="User"/>
+          <Link to="/orders">
+            <img width={20} height={20} src="/img/user.svg" alt="User"/>
+            </Link>
         </li>
       </ul>
     </header>

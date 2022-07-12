@@ -1,9 +1,9 @@
-import { useContext } from 'react';
-import AppContext from '../context';
+import { useContext } from 'react'
+import AppContext from '../context'
 
 import Card from '../components/Card'
 
-function Favorites(/*{ onFavorite }*/) {
+function Favorites({ isLoading }) {
   const {favItems, onFavorite} = useContext(AppContext)
   
   return (
@@ -13,11 +13,13 @@ function Favorites(/*{ onFavorite }*/) {
       </div>
 
       <div className="d-flex flex-wrap">
-        {favItems.map((item) => (
+        {(isLoading ? Array(8).fill({}) : favItems)
+        .map((item) => (
           <Card
             key={item.itemId}
             {...item}
             onFavClick={onFavorite}
+            loading={isLoading}
           />
         ))}
       </div>
