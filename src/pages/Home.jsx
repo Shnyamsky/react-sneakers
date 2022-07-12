@@ -41,7 +41,6 @@ function Home({ searchValue, onChangeSearchInput, onClickClearBtn}) {
         </div>
       </div>
 
-      {/* <div className="d-flex flex-wrap"> */}
       <div className="items-grid">
         {renderItems()}
       </div>
