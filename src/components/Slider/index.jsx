@@ -29,13 +29,13 @@ const Slider = () => {
       <img
         className={styles.arrowLeft}
         onClick={prevSlide}
-        src="img/slider/arrow.svg"
+        src="/img/slider/arrow.svg"
         alt="Left"
       />
       <img
         className={styles.arrowRight}
         onClick={nextSlide}
-        src="img/slider/arrow.svg"
+        src="/img/slider/arrow.svg"
         alt="Right"
       />
       {slides.map((slide, index) => {

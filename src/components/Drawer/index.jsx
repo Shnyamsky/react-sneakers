@@ -44,7 +44,7 @@ function Drawer() {
           Корзина
           <img
             className="cu-p"
-            onClick={() => setCartOpened(false)}
+            onClick={() => {setCartOpened(false); setIsOrderComplite(false)}}
             src="/img/btn-remove.svg"
             alt="Close" />
         </h2>
@@ -101,6 +101,7 @@ function Drawer() {
                 : "Добавьте хотя-бы одну пару кроссовок, чтобы сделать заказ"
               }
               image={isOrderComplete ? "/img/complete-order.jpg" : "/img/empty-cart.jpg"}
+              setIsOrderComplite={setIsOrderComplite}
             />
           )
         }
