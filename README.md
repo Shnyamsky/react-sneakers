@@ -3,6 +3,8 @@
 Project on React.js, JavaScript only.
 Also using scss, react-content-loader and MockAPI.
 
+GitHub Pages: [https://shnyamsky.github.io/react-sneakers/#/](https://shnyamsky.github.io/react-sneakers/#/)
+
 ## Available Scripts
 
 In the project directory, you can run:
